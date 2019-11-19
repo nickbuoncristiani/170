@@ -21,7 +21,8 @@ def get_complete_graph(G, vertices):
 Return stsp on a given subset of vertices which starts and ends at start argument. 
 Output is a list of vertex labels.  
 """
-def stsp(G, vertices, start=0):
+def stsp(G, vertices, start=None):
+    if not start: start=vertices[0]
     dists=[]
     paths=dict(nx.all_pairs_shortest_path(G))
     C=get_complete_graph(G, vertices)
@@ -47,7 +48,7 @@ def stsp(G, vertices, start=0):
     return tsp
 
 def ta_dropoff(G, homes):
-    drive=stsp(G, homes, start=0)
+    drive=stsp(G, homes)
     marked=set()
     for i in range(len(drive)): 
         drive[i]=[drive[i], set()]
