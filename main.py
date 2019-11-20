@@ -5,11 +5,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from random import sample
 
-#get input file from .mtx file
+#get input file as specified by spec from .mtx file. size corresponds to number of homes we want in our test case.
+#homes are selected randomly.
 def generate_input(infile, outfile, size=50):
-    print(infile)
     g=readMM.read_graph(infile)
-    print(g.nodes())
     houses=random.sample(g.nodes(), size)
     with open(outfile, 'w') as file:
         file.write(str(len(g)) + '\n')
@@ -21,23 +20,22 @@ def generate_input(infile, outfile, size=50):
         for row in m:
             file.write(' '.join([str(int(e)) if int(e)==1 else 'x' for e in row]) + '\n')
 
+#master function. Return output file given input file. Incomplete. 
 def solve(infile, output):
     with open(infile, 'r') as file:
         reader=file.readlines()
         g=nx.Graph()
-        homes=list(map(int, reader[3].split(' ')))
+        homes=list(map(int, reader[3].split(' '))) 
         matrix=reader[5:]
-        for i in range(len(matrix)):
+        for i in range(len(matrix)): #here we are trying to convert input matrix to nx matrix. 
             row = matrix[i].strip().split(' ')
             for j in range(len(row)):
                 if row[j] != 'x':
                     g.add_edge(i+1, j+1, weight=float(row[j]))
         
-        drive = STSP.ta_dropoff(g, homes)
+        drive = STSP.ta_dropoff(g, homes) #now we have the solution and we need to generate an output file from it. 
         with open(output, 'w') as file:
             for stop in drive: file.write(str(stop[0]))
-
-
 
 #Enter filename which corresponds with input 
 if __name__ == "__main__":

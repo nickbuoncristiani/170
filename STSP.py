@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 from networkx.algorithms import approximation
 
 """
-Gets graph which can be interpreted by TSP to give STSP through vertices
+Gets graph which can be interpreted by TSP to give STSP through vertices.
+Graph connects all homes by their shortest paths in a complete graph. 
 """    
 def get_complete_graph(G, vertices):
     l=nx.all_pairs_shortest_path_length(G)
@@ -24,37 +25,49 @@ Output is a list of vertex labels.
 def stsp(G, vertices, start=None):
     if not start: start=vertices[0]
     dists=[]
-    paths=dict(nx.all_pairs_shortest_path(G))
-    C=get_complete_graph(G, vertices)
+    paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
+    C=get_complete_graph(G, vertices) 
     
+    #get input to the TSP problem. Input is a list of node pairs and their distances.
     for i in range(len(vertices)):
         for j in range(i+1, len(vertices)): dists.append((i, j, C[vertices[i]][vertices[j]]['weight']))
 
+    #copied from documentation, best_state is the TSP path on C and is the only variable we care about. 
     fitness_dists = mlrose.TravellingSales(distances=dists)
     problem_fit = mlrose.TSPOpt(length=len(C), fitness_fn=fitness_dists, maximize=False)
     best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)  
 
+    #We are going to replace all edges traversed in C with their corresponding paths in G. 
     tsp=[]
     
     tsp.extend(paths[vertices[best_state[0]]][vertices[best_state[1]]])
     for k in range(1,len(best_state)-1):
-        tsp.pop()
+        tsp.pop() #prevent path overlap
         tsp.extend(paths[vertices[best_state[k]]][vertices[best_state[k+1]]])
-    tsp.extend(paths[tsp.pop()][tsp[0]][0:-1])
+    tsp.extend(paths[tsp.pop()][tsp[0]][0:-1]) #connect end point back to start 
     
-    start_index=tsp.index(start)
-    tsp=tsp[start_index:]+tsp[0:start_index]
+    start_index=tsp.index(start) 
+    #Since TSP has arbitary starting point, we want to 
+    #rotate the result so that it starts where we want.
+    tsp=tsp[start_index:]+tsp[0:start_index]  
     tsp.append(tsp[0]) #add start vertex to end to complete the tour
     return tsp
 
+
+"Solve TA dropoff problem on G given set of homes. Starting point is first element in homes"
 def ta_dropoff(G, homes):
-    drive=stsp(G, homes)
+    drive=stsp(G, homes) #optimal drive which drops of all TAs off at their homes.
     marked=set()
+    #extending the STSP solution so that it can be interpreted as a solution to the TA dropoff problem. 
     for i in range(len(drive)): 
-        drive[i]=[drive[i], set()]
+        #set corresponds with TAs which were dropped off at this point. Remember that 
+        #Ta's are identified by the houses in which they live. 
+        drive[i]=[drive[i], set()] 
         if drive[i][0] in homes and drive[i][0] not in marked: 
-            drive[i][1].add(drive[i][0])
+            drive[i][1].add(drive[i][0]) #drop TA off the first time we visit house. avoid repeat dropoffs by marking. 
             marked.add(drive[i][0])
+    
+    #collapse lone paths. 
     i=1
     while i<len(drive)-1:
         while drive[i-1][0]==drive[i+1][0] and len(drive[i][1])<2: 

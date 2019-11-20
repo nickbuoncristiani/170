@@ -13,10 +13,12 @@ def read_graph(filename):
     g=nx.Graph()
     with open(filename, 'r') as file:
         reader=file.readlines()
-        start=0
-        while reader[start][0]=='%': start+=1 
+        start=0 
+        while reader[start][0]=='%': start+=1 #skip the comments at the start of the file. 
         for i in range(start+1, len(reader)):
-            coords=reader[i].split(' ')
+            coords=reader[i].split(' ') 
+            #sparse format lists all nonzero values and their coordinates to save space. 
+            #Having a nonzero value at i, j corresponds with having an edge between i, j
             if int(coords[0]) != int(coords[1]): g.add_edge(int(coords[0]), int(coords[1]), weight=1)
             
     return g
