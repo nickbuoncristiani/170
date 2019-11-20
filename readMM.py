@@ -22,8 +22,8 @@ def read_graph(filename):
     return g
 
 if __name__ == "__main__":
-    g=read_graph('ash85.mtx')
-    print(STSP.ta_dropoff(g, [52, 46, 17, 8]))
+    g=read_graph('bcspwr03.mtx')
+    print(STSP.ta_dropoff(g, [i+1 for i in range(5)]))
     nx.draw_networkx(g, show_labels=True)
     plt.show()
     
