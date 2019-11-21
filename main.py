@@ -35,8 +35,6 @@ def solve(infile, output):
                 if row[j] != 'x':
                     g.add_edge(i+1, j+1, weight=float(row[j]))
     
-
-    
         drive = STSP.ta_dropoff(g, homes) #now we have the solution and we need to generate an output file from it. 
         with open(output, 'w') as file:
             for stop in drive: file.write(str(stop[0]))

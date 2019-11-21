@@ -90,7 +90,7 @@ def write_output(dropoffs, keys, output):
 if __name__ == "__main__":
     inputs = read_input('spec.in')
     g = inputs[0]
-    print(STSP.ta_dropoff(g, [specs[2]] + specs[1]))
+    print(STSP.ta_dropoff(g, [inputs[2]] + inputs[1]))
     nx.draw_networkx(g, show_labels=True)
     plt.show()    
     write_output(STSP.ta_dropoff(g, [inputs[2]] + inputs[1]), inputs[3], 'output.out')

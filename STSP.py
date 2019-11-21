@@ -71,7 +71,7 @@ def ta_dropoff(G, homes):
         #set corresponds with TAs which were dropped off at this point. Remember that 
         #Ta's are identified by the houses in which they live. 
         drive[i]=[drive[i], set()] 
-        if drive[i][0] in homes and drive[i][0] not in marked: 
+        if drive[i][0] in homes and drive[i][0] != homes[0] and drive[i][0] not in marked: 
             drive[i][1].add(drive[i][0]) #drop TA off the first time we visit house. avoid repeat dropoffs by marking. 
             marked.add(drive[i][0])
     
