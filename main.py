@@ -23,7 +23,9 @@ def generate_input(infile, outfile, size=50):
 #master function. Return output file given input file. Incomplete. 
 def solve(infile, output):
     """
-    Might change this portion into a separate function for .mtx to 'processed' input transformations.
+    Given .in file, infile, constructs output file.
+    
+    Original:
     with open(infile, 'r') as file:
         reader=file.readlines()
         g=nx.Graph()
@@ -42,9 +44,10 @@ def solve(infile, output):
             for stop in drive: file.write(str(stop[0]))
     """
     inputs = reader_utils.read_input(infile)
-    reader_utils.write_output(STSP.ta_dropoff(inputs[0], [inputs[2]] + inputs[1]), inputs[3], 'output.out')
+    reader_utils.write_output(STSP.ta_dropoff(inputs[0], [inputs[2]] + inputs[1]), inputs[3], output)
     
 #Enter filename which corresponds with input 
 if __name__ == "__main__":
+    #probably needs an option for which file it takes as parameter
     generate_input(sys.argv[1], sys.argv[2])
     solve(sys.argv[2], 1)
