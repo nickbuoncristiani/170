@@ -46,6 +46,5 @@ def solve(infile, output):
     
 #Enter filename which corresponds with input 
 if __name__ == "__main__":
-    #probably needs an option for which file it takes as parameter
     generate_input(sys.argv[1], sys.argv[2])
     solve(sys.argv[2], 1)
