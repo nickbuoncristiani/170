@@ -63,22 +63,22 @@ which get dropped off at that location. I.E output to the example in the spec wo
 [(soda, {cory}), (dwinelle, {wheeler, rsf}), (campanile, campanile), (barrows, {}), (soda, {})]. In our case we will
 probably use ints instead of strings. 
 """
-def ta_dropoff(G, homes):
-    drive=stsp(G, homes) #optimal drive which drops of all TAs off at their homes.
+def ta_dropoff(G, start, homes):
+    drive=stsp(G, [start] + homes) #optimal drive which drops of all TAs off at their homes.
     marked=set()
     #extending the STSP solution so that it can be interpreted as a solution to the TA dropoff problem. 
     for i in range(len(drive)): 
         #set corresponds with TAs which were dropped off at this point. Remember that 
         #Ta's are identified by the houses in which they live. 
         drive[i]=[drive[i], set()] 
-        if drive[i][0] in homes and drive[i][0] != homes[0] and drive[i][0] not in marked: 
+        if drive[i][0] in homes and drive[i][0] not in marked: 
             drive[i][1].add(drive[i][0]) #drop TA off the first time we visit house. avoid repeat dropoffs by marking. 
             marked.add(drive[i][0])
     
     #collapse lone paths. 
     i=1
     while i<len(drive)-1:
-        while drive[i-1][0]==drive[i+1][0] and len(drive[i][1])<2: 
+        while i>0 and i<len(drive)-1 and drive[i-1][0]==drive[i+1][0] and len(drive[i][1])<2: 
             drive[i-1][1]=drive[i-1][1].union(drive.pop(i)[1])
             drive[i-1][1]=drive[i-1][1].union(drive.pop(i)[1])
             i-=1
@@ -112,7 +112,7 @@ def energy(G, locations):
         
 if __name__ == "__main__":
     G=nx.Graph([(0, 1), (1, 2), (2, 3), (3, 0), (1, 4), (2, 5), (0, 6), (6, 7), (7, 8), (8, 0), (1, 8), (2, 4), (4, 5)])
-    print(ta_dropoff(G, [0, 1, 8, 7, 5, 3]))
+    print(ta_dropoff(G, 0, [1, 8, 7, 5, 3]))
     
     nx.draw_networkx(G, with_labels=True)
     

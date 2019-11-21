@@ -9,42 +9,25 @@ from random import sample
 #homes are selected randomly.
 def generate_input(infile, outfile, size=50):
     g=readMM.read_graph(infile)
-    houses=random.sample(g.nodes(), size)
+    nodes=set(g.nodes)
+    houses=random.sample(nodes, size)
+    start=random.choice(list(nodes - set(houses))) #make sure start isn't in homes. 
     with open(outfile, 'w') as file:
         file.write(str(len(g)) + '\n')
         file.write(str(size) + '\n')
         file.write(' '.join([str(i) for i in range(len(g))]) + '\n')
         file.write(' '.join([str(e) for e in houses]) + '\n')
-        file.write(str(houses[0]) + '\n')
+        file.write(str(start) + '\n')
         m=nx.to_numpy_array(g)
         for row in m:
             file.write(' '.join([str(int(e)) if int(e)==1 else 'x' for e in row]) + '\n')
 
 #master function. Return output file given input file. Incomplete. 
 def solve(infile, output):
-    """
-    Given .in file, infile, constructs output file.
-    
-    Original:
-    with open(infile, 'r') as file:
-        reader=file.readlines()
-        g=nx.Graph()
-        homes=list(map(int, reader[3].split(' '))) 
-        matrix=reader[5:]
-        for i in range(len(matrix)): #here we are trying to convert input matrix to nx matrix. 
-            row = matrix[i].strip().split(' ')
-            for j in range(len(row)):
-                if row[j] != 'x':
-                    g.add_edge(i+1, j+1, weight=float(row[j]))
-    
-        drive = STSP.ta_dropoff(g, homes) #now we have the solution and we need to generate an output file from it. 
-        with open(output, 'w') as file:
-            for stop in drive: file.write(str(stop[0]))
-    """
     inputs = reader_utils.read_input(infile)
-    reader_utils.write_output(STSP.ta_dropoff(inputs[0], [inputs[2]] + inputs[1]), inputs[3], output)
+    reader_utils.write_output(STSP.ta_dropoff(inputs[0], inputs[2], inputs[1]), inputs[3], output)
     
-#Enter filename which corresponds with input 
+#arguments: .mtx file, .in file, .out file, num homes
 if __name__ == "__main__":
-    generate_input(sys.argv[1], sys.argv[2])
-    solve(sys.argv[2], 1)
+    generate_input(sys.argv[1], sys.argv[2], size=int(sys.argv[4]))
+    solve(sys.argv[2], sys.argv[3])

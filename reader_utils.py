@@ -15,7 +15,7 @@ def read_input(filename):
     """
     g = nx.Graph()
     with open(filename, 'r') as file:
-        num_nodes = int(file.readline().replace('\n', ''))
+        n=int(file.readline().strip())
         num_homes = int(file.readline().replace('\n', ''))
         g_nodes = file.readline()
         g_homes = file.readline()
@@ -39,6 +39,7 @@ def read_input(filename):
             Transforms raw readline, homes, into corresponding list in numerical representation.
             """
             homes = homes.replace('\n', '').split()
+            
             for i in range(num_homes):
                 homes[i] = keys[homes[i]]
             return homes
@@ -54,9 +55,9 @@ def read_input(filename):
             temp = line.replace('\n', '').split()
             for i in range(len(temp)):
                 if temp[i] != 'x':
-                    g.add_edge(count, i, weight = int(temp[i]))  
+                    g.add_edge(count, i, weight = float(temp[i]))  
             count += 1
-    graph_numrep = to_dict(g_nodes)            
+    graph_numrep = to_dict(g_nodes)           
     return(g, get_homes(g_homes, graph_numrep), get_start(g_start, graph_numrep), graph_numrep)     
 
 def write_output(dropoffs, keys, output):
@@ -89,9 +90,10 @@ def write_output(dropoffs, keys, output):
     
         
 if __name__ == "__main__":
-    inputs = read_input('spec.in')
+    inputs = read_input('ash85.in')
     g = inputs[0]
-    print(STSP.ta_dropoff(g, [inputs[2]] + inputs[1]))
+    print(inputs[3])
+    write_output(STSP.ta_dropoff(g, [inputs[2]], inputs[1]), inputs[3], 'ash85.out')
+
     nx.draw_networkx(g, show_labels=True)
-    plt.show()    
-    write_output(STSP.ta_dropoff(g, [inputs[2]] + inputs[1]), inputs[3], 'output.out')
+    plt.show()
