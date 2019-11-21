@@ -67,10 +67,12 @@ def write_output(dropoffs, keys, output):
     with open(output, 'w+') as file:
         keys = {v: k for k, v in keys.items()}
         dropoff_nodes = []
+        closed_path = []
         len_dropoffs = len(dropoffs)
         for i in range(len_dropoffs - 1):
             stop_i = keys[dropoffs[i][0]]
             file.write(stop_i + ' ')
+            closed_path.append(stop_i)
             if len(dropoffs[i][1]) != 0:
                 dropoff_nodes.append(stop_i)
         file.write(keys[dropoffs[len_dropoffs - 1][0]] + '\n')
@@ -79,9 +81,7 @@ def write_output(dropoffs, keys, output):
         for i in range(len_dropoffs):
             len_drop_i = len(dropoffs[i][1])
             if len_drop_i != 0:
-                #if i == 0:
-                    #file.write(dropoff_nodes[i] + '\n')
-                file.write(dropoff_nodes[i] + ' ')
+                file.write(closed_path[i] + ' ')
                 len_drop_list_i = list(dropoffs[i][1])
                 for j in range(len_drop_i - 1):
                     file.write(keys[len_drop_list_i[j]] + ' ')
