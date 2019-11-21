@@ -53,8 +53,16 @@ def stsp(G, vertices, start=None):
     tsp.append(tsp[0]) #add start vertex to end to complete the tour
     return tsp
 
+"""
+Solve TA dropoff problem on G given set of homes. Starting point is first element in homes
 
-"Solve TA dropoff problem on G given set of homes. Starting point is first element in homes"
+Input: Graph, List of vertices which correspond to homes (and soda)
+
+Output: list of tuples where first element in tuple is location along the drive and second is set of TAs 
+which get dropped off at that location. I.E output to the example in the spec would look like
+[(soda, {cory}), (dwinelle, {wheeler, rsf}), (campanile, campanile), (barrows, {}), (soda, {})]. In our case we will
+probably use ints instead of strings. 
+"""
 def ta_dropoff(G, homes):
     drive=stsp(G, homes) #optimal drive which drops of all TAs off at their homes.
     marked=set()
