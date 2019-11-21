@@ -4,6 +4,7 @@ import STSP
 
 """
 Given a naive .in file with properties as defined in the spec, read input into networkx graph. 
+Calculates approximate 'cycle', then outputs to file.
 Assumes the matrix given is symmetric and obeys the triangle inequality for now.
 Assumes the file is well-defined for now.
 """
