@@ -81,8 +81,6 @@ def write_output(dropoffs, keys, output):
         for i in range(len_dropoffs):
             len_drop_i = len(dropoffs[i][1])
             if len_drop_i != 0:
-                #if i == 0:
-                    #file.write(closed_path[i] + '\n')
                 file.write(closed_path[i] + ' ')
                 len_drop_list_i = list(dropoffs[i][1])
                 for j in range(len_drop_i - 1):
@@ -93,7 +91,7 @@ def write_output(dropoffs, keys, output):
 if __name__ == "__main__":
     inputs = read_input('spec.in')
     g = inputs[0]
-    #print(STSP.ta_dropoff(g, [specs[2]] + specs[1]))
-    #nx.draw_networkx(g, show_labels=True)
-    #plt.show()    
+    print(STSP.ta_dropoff(g, [inputs[2]] + inputs[1]))
+    nx.draw_networkx(g, show_labels=True)
+    plt.show()    
     write_output(STSP.ta_dropoff(g, [inputs[2]] + inputs[1]), inputs[3], 'output.out')
