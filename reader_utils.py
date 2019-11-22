@@ -22,7 +22,7 @@ def read_input(filename):
         g_start = file.readline()
         
         def to_dict(nodes):
-            """
+            """0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84
             Transforms raw readline, nodes, into corresponding dictionary of their numerical representations.
             0-indexed.
             """
@@ -39,7 +39,6 @@ def read_input(filename):
             Transforms raw readline, homes, into corresponding list in numerical representation.
             """
             homes = homes.replace('\n', '').split()
-            
             for i in range(num_homes):
                 homes[i] = keys[homes[i]]
             return homes
@@ -57,6 +56,7 @@ def read_input(filename):
                 if temp[i] != 'x':
                     g.add_edge(count, i, weight = float(temp[i]))  
             count += 1
+    
     graph_numrep = to_dict(g_nodes)           
     return(g, get_homes(g_homes, graph_numrep), get_start(g_start, graph_numrep), graph_numrep)     
 
@@ -92,8 +92,8 @@ def write_output(dropoffs, keys, output):
 if __name__ == "__main__":
     inputs = read_input('ash85.in')
     g = inputs[0]
-    print(inputs[3])
-    write_output(STSP.ta_dropoff(g, [inputs[2]], inputs[1]), inputs[3], 'ash85.out')
+    
+    write_output(STSP.ta_dropoff(g, inputs[2], inputs[1]), inputs[3], 'ash85.out')
 
     nx.draw_networkx(g, show_labels=True)
     plt.show()

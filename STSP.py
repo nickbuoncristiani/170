@@ -22,7 +22,8 @@ def get_complete_graph(G, vertices):
 Return stsp on a given subset of vertices which starts and ends at start argument. 
 Output is a list of vertex labels.  
 """
-def stsp(G, vertices, start=None):
+def stsp(G, vertices, tree=False, start=None):
+    if tree: G=approximation.steiner_tree(G, vertices)
     if not start: start=vertices[0]
     dists=[]
     paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
@@ -35,7 +36,11 @@ def stsp(G, vertices, start=None):
     #copied from documentation, best_state is the TSP path on C and is the only variable we care about. 
     fitness_dists = mlrose.TravellingSales(distances=dists)
     problem_fit = mlrose.TSPOpt(length=len(C), fitness_fn=fitness_dists, maximize=False)
-    best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)  
+    
+    print('Computing TSP...')
+    best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)
+    #best_state, _  = mlrose.genetic_alg(problem_fit, mutation_prob = 0.2, max_attempts = 100, random_state = 2)
+    print('Finished computing TSP.')
 
     #We are going to replace all edges traversed in C with their corresponding paths in G. 
     tsp=[]
@@ -84,6 +89,7 @@ def ta_dropoff(G, start, homes):
             i-=1
         i+=1
 
+    print('Total energy used: '+ str(energy(G, drive)))
     return drive
 
 """
@@ -107,7 +113,7 @@ def energy(G, locations):
         for home in location[1]:
             walking_dis = walking_dis + paths[starting][home]
 
-    return walking_dis + (2/3*(driving_dis))
+    return walking_dis + (2/3)*(driving_dis)
 
         
 if __name__ == "__main__":

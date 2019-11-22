@@ -27,7 +27,5 @@ def read_graph(filename, n=1):
 
 if __name__ == "__main__":
     g=read_graph('ash85.mtx')
-    print(STSP.ta_dropoff(g, [i+1 for i in range(50)]))
-    nx.draw_networkx(g, show_labels=True)
-    plt.show()
+    print(STSP.ta_dropoff(g, 1, [i+2 for i in range(50)]))
     
