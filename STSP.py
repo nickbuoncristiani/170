@@ -5,6 +5,12 @@ import matplotlib.pyplot as plt
 from networkx.algorithms import approximation
 
 """
+Figure out best, path along a cycle. 
+"""
+def cycle_optimize(G, cycle, homes):
+    print('this is harder than I thought.')
+
+"""
 Gets graph which can be interpreted by TSP to give STSP through vertices.
 Graph connects all homes by their shortest paths in a complete graph. 
 """    
@@ -22,8 +28,7 @@ def get_complete_graph(G, vertices):
 Return stsp on a given subset of vertices which starts and ends at start argument. 
 Output is a list of vertex labels.  
 """
-def stsp(G, vertices, tree=False, start=None):
-    if tree: G=approximation.steiner_tree(G, vertices)
+def stsp(G, vertices, start=None):
     if not start: start=vertices[0]
     dists=[]
     paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
@@ -38,8 +43,8 @@ def stsp(G, vertices, tree=False, start=None):
     problem_fit = mlrose.TSPOpt(length=len(C), fitness_fn=fitness_dists, maximize=False)
     
     print('Computing TSP...')
-    best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)
-    #best_state, _  = mlrose.genetic_alg(problem_fit, mutation_prob = 0.2, max_attempts = 100, random_state = 2)
+    #best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)
+    best_state, _  = mlrose.genetic_alg(problem_fit, mutation_prob = 0.5, random_state = 2)
     print('Finished computing TSP.')
 
     #We are going to replace all edges traversed in C with their corresponding paths in G. 
@@ -69,6 +74,8 @@ which get dropped off at that location. I.E output to the example in the spec wo
 probably use ints instead of strings. 
 """
 def ta_dropoff(G, start, homes):
+    #G=approximation.steiner_tree(G, [start]+homes)
+    #G=nx.minimum_spanning_tree(G)
     drive=stsp(G, [start] + homes) #optimal drive which drops of all TAs off at their homes.
     marked=set()
     #extending the STSP solution so that it can be interpreted as a solution to the TA dropoff problem. 
@@ -89,6 +96,7 @@ def ta_dropoff(G, start, homes):
             i-=1
         i+=1
 
+    print(drive)
     print('Total energy used: '+ str(energy(G, drive)))
     return drive
 
