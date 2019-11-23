@@ -96,6 +96,12 @@ def ta_dropoff(G, start, homes):
             i-=1
         i+=1
 
+    for i in range(len(drive)):
+        for j in range(i+1, len(drive)):
+            if drive[i][0]==drive[j][0]:
+                drive[i][1]=drive[i][1].union(drive[j][1])
+                drive[j][1]=set()
+
     print(drive)
     print('Total energy used: '+ str(energy(G, drive)))
     return drive
