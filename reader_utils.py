@@ -56,14 +56,13 @@ def read_input(filename):
                 if temp[i] != 'x':
                     g.add_edge(count, i, weight = float(temp[i]))  
             count += 1
-    
     graph_numrep = to_dict(g_nodes)           
     return(g, get_homes(g_homes, graph_numrep), get_start(g_start, graph_numrep), graph_numrep)     
 
 def write_output(dropoffs, keys, output):
     """
     Given a list of TA dropoffs of the form of a list of tuples and numerical representation,
-        write to output with alphanumerical notation.    
+    write to output with alphanumerical notation.    
     """
     with open(output, 'w+') as file:
         keys = {v: k for k, v in keys.items()}

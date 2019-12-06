@@ -111,14 +111,13 @@ Input: list returned from calling ta_dropoff and Graph G
 Returns the total energy that the driver and TA's will take in total.
 """
 def energy(G, locations):
-    paths = dict(nx.all_pairs_shortest_path_length(G))
+    paths = dict(nx.shortest_path_length(G, weight='weight'))
     driving_dis = 0
     walking_dis = 0
-
     #looping over each of the locations to find the distance needed to travel between a vertex and the next
     for i in range(len(locations) - 1):
         vertex = locations[i][0]
-        nextVertex = locations [i + 1][0]
+        nextVertex = locations[i + 1][0]
         driving_dis = driving_dis + paths[vertex][nextVertex]
 
     #looping over the locations to compare the walking the TAs have to do from where they get dropped off to home
