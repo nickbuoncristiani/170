@@ -38,9 +38,9 @@ def stsp(G, vertices, start=None):
     paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
     C=get_complete_graph(G, vertices) 
     best_state=list(metric_tsp(C, start=start))
-    print(best_state)
-    #
-    ##get input to the TSP problem. Input is a list of node pairs and their distances.
+    
+    
+    #get input to the TSP problem. Input is a list of node pairs and their distances.
     #for i in range(len(vertices)):
     #    for j in range(i+1, len(vertices)): dists.append((i, j, C[vertices[i]][vertices[j]]['weight']))
 #
