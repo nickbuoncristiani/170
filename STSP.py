@@ -110,7 +110,19 @@ def ta_dropoff(G, start, homes):
                 drive[i][1]=drive[i][1].union(drive[j][1])
                 drive[j][1]=set()
 
+    seen = set()
+    i=0
     print(drive)
+    while i < len(drive):
+        if drive[i][0] in seen:
+            drive = drive[:drive.index(drive[i])] + cycle_check(G, drive[drive.index(drive[i]):i+1]) + \
+                drive[i+1:len(drive)]
+            print(drive)
+        seen.add(drive[i][0])
+        i+=1
+       
+
+    #print(drive)
     print('Total energy used: '+ str(energy(G, drive)))
     return drive
 
@@ -138,19 +150,21 @@ def energy(G, locations):
 
 
 def cycle_check(G, cycle):
-    homes=cycle[0][0] + [node[0] for node in cycle[1:] if node[0] in node[1]]
+    homes=[cycle[0]] + [node for node in cycle[1:] if len(node[1])==1]
     through_cycle = energy(G, cycle) 
+    if len(homes)<2:
+        return cycle
     second_last = homes[-2]
-    driving = 2*(2/3*(nx.shortest_path_length(G, source = second_last, target = homes[0])))
-    walking = nx.shortest_path_length(G, source = second_last, target = homes[-1])
+    driving = 2*(2/3*(nx.shortest_path_length(G, source = second_last[0], target = homes[0][0])))
+    walking = nx.shortest_path_length(G, source = second_last[0], target = homes[-1][0])
     no_cycle = driving + walking
-    second_last_index = cycle.index((second_last, set([second_last])))
+    second_last_index = cycle.index(second_last)
 
     if through_cycle < no_cycle:
         return cycle
     else:
         no_cycle_path = cycle[:second_last_index+1]
-        no_cycle_path[second_last_index][1].add(homes[-1])
+        no_cycle_path[second_last_index][1].add(homes[-1][0])
         no_cycle = no_cycle_path[:]
         for i in reversed(range(len(no_cycle_path) - 1)):
             no_cycle.append(no_cycle_path[i])
