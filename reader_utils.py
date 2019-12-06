@@ -47,7 +47,7 @@ def read_input(filename):
             """
             Transforms raw readline, start, into corresponding numerical representation.
             """
-            return keys[start.replace('\n', '')]
+            return keys[start.replace('\n', '').replace(' ', '')]
         
         count = 0
         for line in file:
@@ -69,6 +69,9 @@ def write_output(dropoffs, keys, output):
         dropoff_nodes = []
         closed_path = []
         len_dropoffs = len(dropoffs)
+        if len_dropoffs == 1:
+            closed_path.append(keys[dropoffs[0][0]])
+            dropoff_nodes.append(keys[dropoffs[0][0]])
         for i in range(len_dropoffs - 1):
             stop_i = keys[dropoffs[i][0]]
             file.write(stop_i + ' ')
