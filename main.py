@@ -42,7 +42,7 @@ def total_cost(refresh=False):
             matrixname = filename[0:len(filename)-4]
             if not(os.path.exists('Tests/' + matrixname+ '.in')) or refresh:
                 generate_input('Tests/' + filename, 'Tests/' + matrixname+'.in')
-            total_energy += solve(matrixname+'.in', matrixname+'.out')
+            total_energy += solve('Tests/' + matrixname+'.in', 'Tests/' + matrixname+'.out')
     return total_energy
     
 #arguments: matrix name, num homes
