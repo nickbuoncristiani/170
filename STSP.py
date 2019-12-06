@@ -135,6 +135,25 @@ def energy(G, locations):
 
     return walking_dis + (2/3)*(driving_dis)
 
+
+def cycle_check(G, cycle):
+    through_cycle = energy(G, cycle)
+    second_last = cycle[len(cycle) -2]
+    driving = 2*(2/3*(nx.shortest_path_length(G, source = second_last, target = cycle[0])))
+    walking = nx.shortest_path_length(G, source = second_last, target = cycle[len(cycle) -1])
+    no_cycle = driving + walking
+
+    if through_cycle < no_cycle:
+        return cycle
+    else:
+        no_cycle_path = cycle[:-2]
+        no_cycle = no_cycle_path
+        for i in reversed(range(len(no_cycle_path) - 1)):
+            no_cycle.extend(no_cycle_path[i])
+        return no_cycle
+
+
+
         
 if __name__ == "__main__":
     G=nx.Graph([(0, 1), (1, 2), (2, 3), (3, 0), (1, 4), (2, 5), (0, 6), (6, 7), (7, 8), (8, 0), (1, 8), (2, 4), (4, 5)])
