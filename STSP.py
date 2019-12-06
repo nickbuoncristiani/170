@@ -138,8 +138,9 @@ def energy(G, locations):
         
 if __name__ == "__main__":
     G=nx.Graph([(0, 1), (1, 2), (2, 3), (3, 0), (1, 4), (2, 5), (0, 6), (6, 7), (7, 8), (8, 0), (1, 8), (2, 4), (4, 5)])
-    ta_dropoff(G, 0, [1,  8, 7, 5, 3])
+    ta_dropoff(G, 0, [1, 8, 7, 5, 3])
     
     nx.draw_networkx(G, with_labels=True)
     
     plt.show()
+    
