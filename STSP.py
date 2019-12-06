@@ -10,6 +10,10 @@ Figure out best, path along a cycle.
 def cycle_optimize(G, cycle, homes):
     print('this is harder than I thought.')
 
+def metric_tsp(G, start=None):
+    mst = nx.minimum_spanning_tree(G, weight='weight')
+    return nx.dfs_preorder_nodes(mst, source=start)   
+
 """
 Gets graph which can be interpreted by TSP to give STSP through vertices.
 Graph connects all homes by their shortest paths in a complete graph. 
@@ -33,27 +37,29 @@ def stsp(G, vertices, start=None):
     dists=[]
     paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
     C=get_complete_graph(G, vertices) 
-    
-    #get input to the TSP problem. Input is a list of node pairs and their distances.
-    for i in range(len(vertices)):
-        for j in range(i+1, len(vertices)): dists.append((i, j, C[vertices[i]][vertices[j]]['weight']))
-
-    #copied from documentation, best_state is the TSP path on C and is the only variable we care about. 
-    fitness_dists = mlrose.TravellingSales(distances=dists)
-    problem_fit = mlrose.TSPOpt(length=len(C), fitness_fn=fitness_dists, maximize=False)
-    
-    print('Computing TSP...')
-    #best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)
-    best_state, _  = mlrose.genetic_alg(problem_fit, mutation_prob = 0.5, random_state = 2)
-    print('Finished computing TSP.')
+    best_state=list(metric_tsp(C, start=start))
+    print(best_state)
+    #
+    ##get input to the TSP problem. Input is a list of node pairs and their distances.
+    #for i in range(len(vertices)):
+    #    for j in range(i+1, len(vertices)): dists.append((i, j, C[vertices[i]][vertices[j]]['weight']))
+#
+    ##copied from documentation, best_state is the TSP path on C and is the only variable we care about. 
+    #fitness_dists = mlrose.TravellingSales(distances=dists)
+    #problem_fit = mlrose.TSPOpt(length=len(C), fitness_fn=fitness_dists, maximize=False)
+    #
+    #print('Computing TSP...')
+    ##best_state, _ = mlrose.genetic_alg(problem_fit, random_state = 2)
+    #best_state, _  = mlrose.genetic_alg(problem_fit, mutation_prob = 0.5, random_state = 2)
+    #print('Finished computing TSP.')
 
     #We are going to replace all edges traversed in C with their corresponding paths in G. 
     tsp=[]
-    
     tsp.extend(paths[vertices[best_state[0]]][vertices[best_state[1]]])
     for k in range(1,len(best_state)-1):
         tsp.pop() #prevent path overlap
         tsp.extend(paths[vertices[best_state[k]]][vertices[best_state[k+1]]])
+        #tsp.extend(paths[best_state[k]][best_state[k+1]])
     tsp.extend(paths[tsp.pop()][tsp[0]][0:-1]) #connect end point back to start 
     
     start_index=tsp.index(start) 
@@ -131,9 +137,8 @@ def energy(G, locations):
         
 if __name__ == "__main__":
     G=nx.Graph([(0, 1), (1, 2), (2, 3), (3, 0), (1, 4), (2, 5), (0, 6), (6, 7), (7, 8), (8, 0), (1, 8), (2, 4), (4, 5)])
-    print(ta_dropoff(G, 0, [1, 8, 7, 5, 3]))
+    ta_dropoff(G, 0, [1, 8, 7, 5, 3])
     
     nx.draw_networkx(G, with_labels=True)
     
     plt.show()
-
