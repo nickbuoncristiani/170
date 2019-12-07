@@ -186,7 +186,7 @@ def largest_subcycle(cycle, node):
         return best, []
 
 def cycle_check(G, cycle):
-    homes=[cycle[0]] + [node for node in cycle[1:] if len(node[1])>=1]
+    homes=[cycle[0]] + [node for node in cycle[1:] if len(node[1])==1]
     through_cycle = energy(G, cycle) 
     cycle_copy = [[node[0], set(node[1])] for node in cycle]
     
