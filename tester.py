@@ -3,6 +3,7 @@ import os, sys
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
+import output_validator
 from random import sample
 """
 def local_cycle(dropoffs, graph):
@@ -41,6 +42,10 @@ def get_complete_graph(G, vertices):
 if __name__ == "__main__": 
     
     #main.solve(str(1)+'_50.in', str(1)+'_50.out')
+    for filename in os.listdir('Tests'):
+        if filename.endswith('.in'):
+            matrixname = filename[0:len(filename)-3]
+            validate_output('Tests' + filename, 'Tests/' + matrixname+'.out')
     
     for i in range(1, 2):
         if os.path.exists(str(i)+'_50.in'):    
