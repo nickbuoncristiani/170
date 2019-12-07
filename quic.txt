@@ -1,4 +1,4 @@
-for filename in os.listdir('Tests'):
+for filename in os.listdir:
         if filename.endswith('.in'):
             matrixname = filename[0:len(filename)-3]
-            validate_output('Tests' + filename, 'Tests/' + matrixname+'.out')
+            validate_output(filename, matrixname+'.out')
