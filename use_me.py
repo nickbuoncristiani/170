@@ -12,7 +12,7 @@ if __name__ == "__main__":
         if os.path.exists(str(i)+'_200.in'):
             main.solve(str(i)+'_200.in', str(i)+'_200.out')
    
-    for filename in os.listdir('Tests'):
+    for filename in os.listdir():
         if filename.endswith('.in'):
             matrixname = filename[0:len(filename)-3]
-            validate_output('Tests' + filename, 'Tests/' + matrixname+'.out')
+            validate_output(filename, matrixname+'.out')
