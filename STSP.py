@@ -124,6 +124,7 @@ def ta_dropoff(G, start, homes):
             seen[drive[i][0]]=i
         i+=1
 
+    """ 
     new_dropoffs = [node[0] for node in drive if len(node[1])>0]
     if start not in new_dropoffs: new_dropoffs = [start] + new_dropoffs
     new_drive = stsp(G, new_dropoffs)
@@ -141,8 +142,8 @@ def ta_dropoff(G, start, homes):
                     break
             marked.add(new_drive[i])
         new_drive[i]=[new_drive[i], dropoffs] 
-
-    print(new_drive)
+    """
+    print(drive)
     print('Total energy used: '+ str(energy(G, drive)))
     return drive
 

@@ -18,18 +18,15 @@ def local_cycle(dropoffs, graph):
         
         for e in nx.neighbours(graph, i):
         
-
+"""
 def solve(infile, output):
     inputs = reader_utils.read_input(infile)
-    
-    #vertices = [inputs[2]] + inputs[1]
-    #g = get_complete_graph(inputs[0], vertices)
-    #return g[0][22]
-    #for i in range(len(vertices)):
-    #    for j in range(i+1, len(vertices)): print((i, j, g[vertices[i]][vertices[j]]['weight']))
     dropoffs=STSP.ta_dropoff(inputs[0], inputs[2], inputs[1])
-    reader_utils.write_output(dropoffs, inputs[3], output)            
-"""
+    reader_utils.write_output(dropoffs, inputs[3], output)
+    nx.draw(inputs[0])
+    plt.show()
+    return STSP.energy(inputs[0], dropoffs)
+
 
 def get_complete_graph(G, vertices):
     l=nx.all_pairs_shortest_path_length(G)
@@ -43,7 +40,9 @@ def get_complete_graph(G, vertices):
     
 if __name__ == "__main__": 
     
-    for i in range(201, 250):
+    #main.solve(str(1)+'_50.in', str(1)+'_50.out')
+    
+    for i in range(1, 2):
         if os.path.exists(str(i)+'_50.in'):    
             main.solve(str(i)+'_50.in', str(i)+'_50.out')
         if os.path.exists(str(i)+'_100.in'):
