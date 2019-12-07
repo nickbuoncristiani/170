@@ -40,18 +40,23 @@ def get_complete_graph(G, vertices):
     return C    
     
 if __name__ == "__main__": 
+
+    #for filename in os.listdir('Tests'):
+    #    if filename.endswith('.in'):
+    #        matrixname = filename[0:len(filename)-3]
+    #        ov.validate_output(filename, matrixname+'.out')
     
-    main.solve(str(1)+'_50.in', str(1)+'_50.out')
-    for filename in os.listdir('Tests'):
+    #main.solve(str(1)+'_50.in', str(1)+'_50.out')
+    for filename in os.listdir('Tests/'):
         if filename.endswith('.in'):
             matrixname = filename[0:len(filename)-3]
-            ov.validate_output('Tests' + filename, 'Tests/' + matrixname+'.out')
-    """
-    for i in range(400):
-        if os.path.exists('project-fa19-master/inputs/' + str(i)+'_50.in'):    
-            main.solve('project-fa19-master/inputs/' + str(i)+'_50.in', str(i)+'_50.out')
-        if os.path.exists('project-fa19-master/inputs/' + str(i)+'_100.in'):
-            main.solve('project-fa19-master/inputs/' + str(i)+'_100.in', str(i)+'_100.out')
-        if os.path.exists('project-fa19-master/inputs/' + str(i)+'_200.in'):
-            main.solve('project-fa19-master/inputs/' + str(i)+'_200.in', str(i)+'_200.out')
-    """
+            ov.validate_output('Tests/' + filename, 'Tests/' + matrixname+'.out')
+    
+    #for i in range(12,400):
+    #    if os.path.exists('project-fa19-master/inputs/' + str(i)+'_50.in'):    
+    #        main.solve('project-fa19-master/inputs/' + str(i)+'_50.in', str(i)+'_50.out')
+    #    if os.path.exists('project-fa19-master/inputs/' + str(i)+'_100.in'):
+    #        main.solve('project-fa19-master/inputs/' + str(i)+'_100.in', str(i)+'_100.out')
+    #    if os.path.exists('project-fa19-master/inputs/' + str(i)+'_200.in'):
+    #        main.solve('project-fa19-master/inputs/' + str(i)+'_200.in', str(i)+'_200.out')
+    

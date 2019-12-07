@@ -33,6 +33,7 @@ Output is a list of vertex labels.
 """
 def stsp(G, vertices, start=None):
     if not start: start=vertices[0]
+    #print(start)
     #dists=[]
     paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
     
