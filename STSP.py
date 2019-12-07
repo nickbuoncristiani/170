@@ -114,35 +114,35 @@ def ta_dropoff(G, start, homes):
     seen = {}
     i=0
     #print(drive)
-    while i < len(drive):
-        if drive[i][0] in seen:
-            last=seen[drive[i][0]]
-            seen[drive[i][0]]=i
-            drive = drive[:last] + cycle_check(G, drive[last:i+1]) + \
-                drive[i+1:len(drive)]
-        else:
-            seen[drive[i][0]]=i
-        i+=1
+    #while i < len(drive):
+    #    if drive[i][0] in seen:
+    #        last=seen[drive[i][0]]
+    #        seen[drive[i][0]]=i
+    #        drive = drive[:last] + cycle_check(G, drive[last:i+1]) + \
+    #            drive[i+1:len(drive)]
+    #    else:
+    #        seen[drive[i][0]]=i
+    #    i+=1
 
-    new_dropoffs = [node[0] for node in drive if len(node[1])>0]
-    if start not in new_dropoffs: new_dropoffs = [start] + new_dropoffs
-    new_drive = stsp(G, new_dropoffs)
+    #new_dropoffs = [node[0] for node in drive if len(node[1])>0]
+    #if start not in new_dropoffs: new_dropoffs = [start] + new_dropoffs
+    #new_drive = stsp(G, new_dropoffs)
+#
+    #marked=set()
+    ##extending the STSP solution so that it can be interpreted as a solution to the TA dropoff problem. 
+    #for i in range(len(new_drive)): 
+    #    #set corresponds with TAs which were dropped off at this point. Remember that 
+    #    #Ta's are identified by the houses in which they live.
+    #    dropoffs=set() 
+    #    if new_drive[i] not in marked:
+    #        for k in range(len(drive)): 
+    #            if drive[k][0] == new_drive[i]: 
+    #                dropoffs=drive[k][1]
+    #                break
+    #        marked.add(new_drive[i])
+    #    new_drive[i]=[new_drive[i], dropoffs] 
 
-    marked=set()
-    #extending the STSP solution so that it can be interpreted as a solution to the TA dropoff problem. 
-    for i in range(len(new_drive)): 
-        #set corresponds with TAs which were dropped off at this point. Remember that 
-        #Ta's are identified by the houses in which they live.
-        dropoffs=set() 
-        if new_drive[i] not in marked:
-            for k in range(len(drive)): 
-                if drive[k][0] == new_drive[i]: 
-                    dropoffs=drive[k][1]
-                    break
-            marked.add(new_drive[i])
-        new_drive[i]=[new_drive[i], dropoffs] 
-
-    print(new_drive)
+    print(drive)
     print('Total energy used: '+ str(energy(G, drive)))
     return drive
 
