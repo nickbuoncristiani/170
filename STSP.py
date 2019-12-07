@@ -2,6 +2,7 @@
 import networkx as nx
 import mlrose
 import matplotlib.pyplot as plt
+import metric_tsp
 from networkx.algorithms import approximation
 
 """
@@ -10,14 +11,12 @@ Figure out best, path along a cycle.
 def cycle_optimize(G, cycle, homes):
     print('this is harder than I thought.')
 
-def metric_tsp(G, start=None):
-    mst = nx.minimum_spanning_tree(G, weight='weight')
-    return nx.dfs_preorder_nodes(mst, source=start)   
+def mtsp(G, start=None):
+    #mst = nx.minimum_spanning_tree(G, weight='weight')
+    #return nx.dfs_preorder_nodes(mst, source=start)
+    tsp = metric_tsp.tsp(G)
+    return metric_tsp.tsp(G)
 
-"""
-Gets graph which can be interpreted by TSP to give STSP through vertices.
-Graph connects all homes by their shortest paths in a complete graph. 
-"""    
 def get_complete_graph(G, vertices):
     l=nx.all_pairs_shortest_path_length(G)
     C=nx.Graph()
@@ -34,11 +33,13 @@ Output is a list of vertex labels.
 """
 def stsp(G, vertices, start=None):
     if not start: start=vertices[0]
+    #print(start)
     #dists=[]
     paths=dict(nx.all_pairs_shortest_path(G)) #store all shortest paths.
     
     C=get_complete_graph(G, vertices) 
-    best_state=list(metric_tsp(C, start=start))
+    best_state=list(mtsp(C, start=start))
+    #best_State = metric_tsp.tsp(C)
     
     
     #get input to the TSP problem. Input is a list of node pairs and their distances.
@@ -111,17 +112,27 @@ def ta_dropoff(G, start, homes):
                 drive[i][1]=drive[i][1].union(drive[j][1])
                 drive[j][1]=set()
 
-    seen = {}
-    i=0
-    while i < len(drive):
-        if drive[i][0] in seen:
-            last=seen[drive[i][0]]
-            seen[drive[i][0]]=i
-            drive = drive[:last] + cycle_check(G, drive[last:i+1]) + \
-                drive[i+1:len(drive)]
-        else:
-            seen[drive[i][0]]=i
-        i+=1
+    #seen = {}
+    #i=0
+    #while i < len(drive):
+    #    if drive[i][0] in seen:
+    #        last=seen[drive[i][0]]
+    #        seen[drive[i][0]]=i
+    #        new_path = cycle_check(G, drive[last:i+1])
+    #        if new_path:
+    #            new_drive = []
+    #            for k in range(last):
+    #                new_drive.append(drive[k])
+    #            for e in new_path:
+    #                new_drive.append(e)
+    #            for j in range(i+1, len(drive)):
+    #                new_drive.append(drive[j])
+    #            drive = new_drive
+    #            #drive = drive[:last] + new_path + \
+    #            #    drive[i+1:len(drive)]
+    #    else:
+    #        seen[drive[i][0]]=i
+    #    i+=1
 
     #new_dropoffs = [node[0] for node in drive if len(node[1])>0]
     #if start not in new_dropoffs: new_dropoffs = [start] + new_dropoffs
@@ -141,7 +152,7 @@ def ta_dropoff(G, start, homes):
     #        marked.add(new_drive[i])
     #    new_drive[i]=[new_drive[i], dropoffs] 
 
-    print(drive)
+    #print(drive)
     print('Total energy used: '+ str(energy(G, drive)))
     return drive
 
@@ -186,7 +197,7 @@ def largest_subcycle(cycle, node):
         return best, []
 
 def cycle_check(G, cycle):
-    homes=[cycle[0]] + [node for node in cycle[1:] if len(node[1])==1]
+    homes=[cycle[0]] + [node for node in cycle[1:] if len(node[1])>=1]
     through_cycle = energy(G, cycle) 
     cycle_copy = [[node[0], set(node[1])] for node in cycle]
     
@@ -206,7 +217,7 @@ def cycle_check(G, cycle):
     #no_cycle = driving + walking
     
     if through_cycle < energy(G, no_cycle):
-        return cycle
+        return None
     else:
         return no_cycle
     #homes=[cycle[0]] + [node for node in cycle[1:] if len(node[1])>=1]
@@ -236,6 +247,8 @@ def cycle_check(G, cycle):
         
 if __name__ == "__main__":
     G=nx.Graph([(0, 1), (1, 2), (2, 3), (3, 0), (1, 4), (2, 5), (0, 6), (6, 7), (7, 8), (8, 0), (1, 8), (2, 4), (4, 5)])
+    
+    #print(stsp(G, [1, 8, 7, 5, 3] ))
     ta_dropoff(G, 0, [1, 8, 7, 5, 3])
     
     nx.draw_networkx(G, with_labels=True)
